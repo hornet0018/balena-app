@@ -1,44 +1,110 @@
-# Balena Grafana Application
+# Jetson Nano Web Control Panel
 
-This is a Grafana monitoring dashboard application for balena devices.
+Jetson Nano用のWebベース制御パネルアプリケーションです。ファン制御、CPU温度・クロック監視機能を提供します。
 
-## Features
+## 機能
 
-- Grafana dashboard with admin interface
-- Pre-configured with basic datasources
-- Persistent data storage
-- Health monitoring
-- Easy deployment to balena devices
+- 🌀 **ファン制御**: リアルタイムでファン速度を0-100%で調整可能
+- 🌡️ **CPU温度監視**: Jetson NanoのCPU温度をリアルタイム表示
+- ⚡ **CPUクロック監視**: 現在のCPU周波数を表示
+- ⏱️ **稼働時間表示**: システムのアップタイムを表示
+- 📊 **自動更新**: 5秒ごとにステータスを自動更新
+- 🎨 **モダンUI**: レスポンシブデザインでモバイル対応
 
-## Configuration
+## 技術スタック
 
-- Default admin username: `admin`
-- Default admin password: `admin` (change this in production!)
-- Web interface available on port 3000
+- **Backend**: Python 3.6 + Flask 2.0.3
+- **Frontend**: Vanilla JavaScript + CSS3
+- **コンテナ**: Docker (Balena対応)
+- **ベースイメージ**: balenalib/jetson-nano-ubuntu:bionic-run-20221215
 
-## Deployment
+## デプロイ方法
 
-1. Make sure you have balena CLI installed
-2. Login to your balena account: `balena login`
-3. Create or select your application
-4. Push to balena: `balena push <app-name>`
+### Balena CLIを使用
 
-## Environment Variables
+1. Balena CLIをインストール
+2. デバイスを検出:
+```bash
+balena device detect
+```
 
-You can configure the following environment variables in balena dashboard:
+3. ローカルプッシュ:
+```bash
+balena push <device-ip>.local
+```
 
-- `GF_SECURITY_ADMIN_PASSWORD`: Admin password (default: admin)
-- `GF_USERS_ALLOW_SIGN_UP`: Allow user signup (default: false)
-- `GF_SECURITY_ALLOW_EMBEDDING`: Allow embedding (default: true)
+例:
+```bash
+balena push 39c639e.local
+```
 
-## Usage
+### 環境変数
 
-1. After deployment, access Grafana at `http://<device-ip>:3000`
-2. Login with admin/admin credentials
-3. Start creating dashboards and adding data sources
+| 変数名 | デフォルト値 | 説明 |
+|--------|------------|------|
+| `FAN_PERCENT` | 50 | 起動時のファン速度 (0-100%) |
 
-## Security Notes
+## 使い方
 
-- Change the default admin password before production use
-- Consider using environment variables for sensitive configuration
-- Review security settings in grafana.ini as needed
+1. デプロイ後、ブラウザで `http://<device-ip>:8080` にアクセス
+2. リアルタイムでシステムステータスを確認
+3. スライダーでファン速度を調整
+
+## ファイル構成
+
+```
+jetson_nano/
+├── Dockerfile              # コンテナ定義
+├── app.py                  # Flaskアプリケーション
+├── requirements.txt        # Python依存関係
+├── static/
+│   ├── css/
+│   │   └── style.css      # スタイルシート
+│   └── js/
+│       └── app.js         # フロントエンドロジック
+└── templates/
+    └── index.html         # HTMLテンプレート
+```
+
+## API エンドポイント
+
+### `GET /api/status`
+システムステータスを取得
+
+**レスポンス例:**
+```json
+{
+  "status": "Running",
+  "uptime": "2h 15m",
+  "cpu_temp": "45.2°C",
+  "cpu_clock": "1479 MHz",
+  "fan_percent": 50
+}
+```
+
+### `GET /api/fan/<percent>`
+ファン速度を設定 (0-100%)
+
+**レスポンス例:**
+```json
+{
+  "success": true,
+  "percent": 75
+}
+```
+
+## 開発
+
+ローカルで開発する場合:
+
+```bash
+cd jetson_nano
+pip3 install -r requirements.txt
+python3 app.py
+```
+
+ブラウザで `http://localhost:8080` にアクセス
+
+## ライセンス
+
+MIT License
