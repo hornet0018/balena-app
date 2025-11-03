@@ -20,6 +20,7 @@ RUN pip3 install --upgrade pip setuptools wheel
 COPY requirements.txt .
 COPY app.py .
 COPY templates/ ./templates/
+COPY static/ ./static/
 
 # Install Python dependencies
 RUN pip3 install --no-cache-dir -r requirements.txt
