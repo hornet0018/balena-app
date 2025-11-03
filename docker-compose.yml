@@ -1,0 +1,21 @@
+version: '2'
+
+services:
+  grafana:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_ALLOW_EMBEDDING=true
+    restart: unless-stopped
+    labels:
+      io.balena.features.dbus: '1'
+      io.balena.features.sysfs: '1'
+      io.balena.features.procfs: '1'
+
+volumes:
+  grafana-storage:
