@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Jetson Nano Control Panel</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Jetson Nano Control Panel</h1>
+        
+        <div class="card">
+            <h2> System Status</h2>
+            <div class="status-card">
+                <div class="status-item">
+                    <span class="status-label">Status:</span>
+                    <span class="status-value" id="status">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Uptime:</span>
+                    <span class="status-value" id="uptime">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">CPU Temperature:</span>
+                    <span class="status-value" id="cpu-temp">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">CPU Clock:</span>
+                    <span class="status-value" id="cpu-clock">Loading...</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Fan Speed:</span>
+                    <span class="status-value" id="current-fan">Loading...</span>
+                </div>
+            </div>
+                    
+            <div class="fan-control">
+                <h2>🌀 Fan Control</h2>
+                <div class="fan-value">
+                    <span id="fan-display">50</span>%
+                </div>
+                <div class="slider-container">
+                    <input type="range" min="0" max="100" value="50" class="slider" id="fanSlider">
+                </div>
+            </div>
+            
+            <div class="update-time" id="last-update">
+                Last update: Never
+            </div>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

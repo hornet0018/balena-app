@@ -1,21 +1,15 @@
 version: '2'
 
 services:
-  grafana:
-    build: .
+  jetson-app:
+    build: ./jetson_nano
+    privileged: true
     ports:
-      - "3000:3000"
-    volumes:
-      - grafana-storage:/var/lib/grafana
+      - "8080:8080"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-      - GF_USERS_ALLOW_SIGN_UP=false
-      - GF_SECURITY_ALLOW_EMBEDDING=true
+      - FAN_PERCENT=50
     restart: unless-stopped
     labels:
       io.balena.features.dbus: '1'
       io.balena.features.sysfs: '1'
       io.balena.features.procfs: '1'
-
-volumes:
-  grafana-storage:
